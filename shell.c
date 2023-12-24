@@ -1,24 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
+#include <sys/wait.h>
 int main()
 {
+  int status;
   char command[100];
-  int i = 0;
-  int j = 0;
-  if (fgets(command, 100, stdin) != NULL) {
-    i=strlen(command)-1;
-    command[i]='\0';
-    char *a = strtok(command," ");
-    while(a!=NULL){
-      printf("%s",a);
-      a = strtok(NULL," ");
+  int len;
+  pid_t child_pid;
+  while(1){
+  printf("$ ");
+  if(fgets(command,100,stdin)==NULL)
+    {
+      break;
     }
-    printf("bash: %s: command not found\n",command);
+  len = strlen(command);
+  command[len-1]='\0';
+  child_pid = fork();
+  if(child_pid == 0){
+    if(execlp(command,command,NULL)==-1){
+      printf("./shell: No such file or directory\n");
+    }
   }
   else{
-    exit(98);
+    wait(&status);
   }
-  return (1);
+  }
+  return 0;
 }
