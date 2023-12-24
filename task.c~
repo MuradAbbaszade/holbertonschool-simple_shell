@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/wait.h>
+int main()
+{
+  int status;
+  char command[100];
+  printf("$ ");
+  if(fgets(command,100,stdin)==NULL)
+    {
+      exit(98);
+    }
+  int len = strlen(command);
+  command[len-1]='\0';
+  pid_t child_pid = fork();
+  if(child_pid == 0){
+    if(execlp(command,command,NULL)==-1){
+      printf("Command not found\n");
+    }
+  }
+  else{
+    waitpid(child_pid,&status,0);
+  }
+  return 0;
+}
