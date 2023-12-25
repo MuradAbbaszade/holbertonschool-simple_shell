@@ -23,30 +23,35 @@ int main()
 {
   int status;
   char command[100];
-  int len;
   pid_t child_pid;
-  char *args[] = {NULL};
+  char *args[100];
   char *envp[] = {NULL};
+  char *arg;
+  int i = 0;
   while(1){
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
 	break;
       }
-    len = strlen(command);
-    if (len > 0 && command[len - 1] == '\n') {
-      command[len - 1] = '\0';
+
+    arg = strtok(command, " \n\t");
+    while(arg){
+      args[i] = arg;
+      arg = strtok(NULL," \n\t");
+      i++;
     }
-    rm_whitespaces(command);
+    args[i]=NULL;
     if(command[0]=='\0') continue;
+    i = 0;
     child_pid = fork();
     if(child_pid==-1){
       perror("error");
       exit(EXIT_FAILURE);
     }
     if(child_pid == 0){
-      if(execve(command,args,envp)==-1){
-	fprintf(stderr, "./shell: %s: command not found\n", command);
+      if(execve(args[0],args,envp)==-1){
+	fprintf(stderr, "./shell: %s: command not found\n", args[0]);
 	exit(EXIT_FAILURE);
       }
     }
