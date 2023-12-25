@@ -4,21 +4,6 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <ctype.h>
-void rm_whitespaces(char *str) {
-  int i=0,j=0;
-  if (str == NULL) {
-      return;
-    }
-    while (str[i]) {
-
-        if (!isspace((unsigned char)str[i])) {
-            str[j] = str[i];
-            j++;
-        }
-        i++;
-    }
-    str[j] = '\0';
-}
 int main()
 {
   int status;
@@ -42,7 +27,7 @@ int main()
       i++;
     }
     args[i]=NULL;
-    if(command[0]=='\0') continue;
+    if(args[0]==NULL) continue;
     i = 0;
     child_pid = fork();
     if(child_pid==-1){
