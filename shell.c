@@ -3,6 +3,17 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+void trim_whitespaces(char *str) {
+  char *end;
+  while (*str == ' ' || *str == '\t') {
+        str++;
+    }
+    end = str + strlen(str) - 1;
+    while (end > str && (*end == ' ' || *end == '\t' || *end == '\n')) {
+        end--;
+    }
+    *(end + 1) = '\0';
+}
 int main()
 {
   int status;
@@ -15,12 +26,14 @@ int main()
       {
 	break;
       }
+    trim_whitespaces(command);
     len = strlen(command);
     if (len > 0 && command[len - 1] == '\n') {
       command[len - 1] = '\0';
     }
     child_pid = fork();
     if(child_pid==-1){
+      perror("error");
       exit(EXIT_FAILURE);
     }
     if(child_pid == 0){
@@ -31,9 +44,6 @@ int main()
     }
     else{
       wait(&status);
-      if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-	{
-	}
     }
   }
   return 0;
