@@ -14,6 +14,7 @@ int main()
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
+	printf("\n");
 	exit(EXIT_FAILURE);
       }
     len = strlen(command);
