@@ -15,7 +15,7 @@ int main()
     if(fgets(command,100,stdin)==NULL)
       {
 	printf("\n");
-	exit(EXIT_FAILURE);
+	break;
       }
     len = strlen(command);
     if (len > 0 && command[len - 1] == '\n') {
@@ -27,11 +27,15 @@ int main()
     }
     if(child_pid == 0){
       if(execlp(command,command,NULL)==-1){
-	printf("./shell: No such file or directory\n");
+	exit(EXIT_FAILURE);
       }
     }
     else{
       wait(&status);
+      if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+	{
+	  fprintf(stderr, "./shell: %s: command not found\n", command);
+	}
     }
   }
   return 0;
