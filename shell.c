@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <ctype.h>
-void removeWhitespaces(char *str) {
+void rm_whitespaces(char *str) {
   int i=0,j=0;
   if (str == NULL) {
       return;
@@ -25,25 +25,27 @@ int main()
   char command[100];
   int len;
   pid_t child_pid;
-  
+  char *args[] = {NULL};
+  char *envp[] = {NULL};
   while(1){
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
 	break;
       }
-    removeWhitespaces(command);
     len = strlen(command);
     if (len > 0 && command[len - 1] == '\n') {
       command[len - 1] = '\0';
     }
+    rm_whitespaces(command);
+    if(command[0]=='\0') continue;
     child_pid = fork();
     if(child_pid==-1){
       perror("error");
       exit(EXIT_FAILURE);
     }
     if(child_pid == 0){
-      if(execlp(command,command,NULL)==-1){
+      if(execve(command,args,envp)==-1){
 	fprintf(stderr, "./shell: %s: command not found\n", command);
 	exit(EXIT_FAILURE);
       }
