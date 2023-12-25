@@ -10,7 +10,6 @@ int main()
   int len;
   pid_t child_pid;
   while(1){
-    printf("murad$ ");
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
