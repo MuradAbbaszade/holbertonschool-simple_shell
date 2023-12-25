@@ -10,7 +10,6 @@ int main()
   int status;
   char command[100];
   pid_t child_pid;
-  pid_t my_pid;
   char *args[100];
   char *envp[] = {NULL};
   char *arg;
@@ -31,7 +30,6 @@ int main()
     args[i]=NULL;
     if(args[0]==NULL) continue;
 
-    my_pid = getpid();
     if(strcmp(args[0], "exit")==0)
       {
 	break;
