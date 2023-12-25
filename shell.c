@@ -32,7 +32,7 @@ int main()
 
     if(strcmp(args[0], "exit")==0)
       {
-	break;
+	exit(status);
       }
     child_pid = fork();
     if(child_pid==-1){
@@ -47,9 +47,6 @@ int main()
     }
     else{
       wait(&status);
-      if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
-	status = 2;
-      }
     }
   }
   return 0;
