@@ -5,10 +5,10 @@
 #include <sys/wait.h>
 #include <ctype.h>
 void removeWhitespaces(char *str) {
-    if (str == NULL) {
+  int i=0,j=0;
+  if (str == NULL) {
       return;
     }
-    int i = 0, j = 0;
     while (str[i]) {
 
         if (!isspace((unsigned char)str[i])) {
