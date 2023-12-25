@@ -3,16 +3,21 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
-void trim_whitespaces(char *str) {
-  char *end;
-  while (*str == ' ' || *str == '\t') {
-        str++;
+#include <ctype.h>
+void removeWhitespaces(char *str) {
+    if (str == NULL) {
+      return;
     }
-    end = str + strlen(str) - 1;
-    while (end > str && (*end == ' ' || *end == '\t' || *end == '\n')) {
-        end--;
+    int i = 0, j = 0;
+    while (str[i]) {
+
+        if (!isspace((unsigned char)str[i])) {
+            str[j] = str[i];
+            j++;
+        }
+        i++;
     }
-    *(end + 1) = '\0';
+    str[j] = '\0';
 }
 int main()
 {
@@ -20,13 +25,14 @@ int main()
   char command[100];
   int len;
   pid_t child_pid;
+  
   while(1){
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
 	break;
       }
-    trim_whitespaces(command);
+    removeWhitespaces(command);
     len = strlen(command);
     if (len > 0 && command[len - 1] == '\n') {
       command[len - 1] = '\0';
