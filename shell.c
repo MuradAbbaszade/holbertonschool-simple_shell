@@ -25,6 +25,7 @@ int main()
     }
     if(child_pid == 0){
       if(execlp(command,command,NULL)==-1){
+	fprintf(stderr, "./shell: %s: command not found\n", command);
 	exit(EXIT_FAILURE);
       }
     }
@@ -32,7 +33,6 @@ int main()
       wait(&status);
       if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 	{
-	  fprintf(stderr, "./shell: %s: command not found\n", command);
 	}
     }
   }
