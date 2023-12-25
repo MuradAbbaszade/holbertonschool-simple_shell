@@ -47,6 +47,9 @@ int main()
     }
     else{
       wait(&status);
+      if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+	status = 2;
+      }
     }
   }
   return 0;
