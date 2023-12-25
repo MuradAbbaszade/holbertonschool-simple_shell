@@ -4,11 +4,13 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <ctype.h>
+#include <signal.h>
 int main()
 {
   int status;
   char command[100];
   pid_t child_pid;
+  pid_t my_pid;
   char *args[100];
   char *envp[] = {NULL};
   char *arg;
@@ -28,7 +30,15 @@ int main()
     }
     args[i]=NULL;
     if(args[0]==NULL) continue;
-    i = 0;
+
+    my_pid = getpid();
+    if(strcmp(args[0], "exit")==0)
+      {
+	if(kill(my_pid, SIGKILL) == -1)
+	  {
+	    exit(EXIT_FAILURE);
+	  }
+      }
     child_pid = fork();
     if(child_pid==-1){
       perror("error");
