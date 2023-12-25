@@ -34,10 +34,7 @@ int main()
     my_pid = getpid();
     if(strcmp(args[0], "exit")==0)
       {
-	if(kill(my_pid, SIGKILL) == -1)
-	  {
-	    exit(EXIT_FAILURE);
-	  }
+	break;
       }
     child_pid = fork();
     if(child_pid==-1){
