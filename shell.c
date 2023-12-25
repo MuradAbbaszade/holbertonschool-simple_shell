@@ -13,7 +13,6 @@ int main()
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
-	printf("\n");
 	break;
       }
     len = strlen(command);
