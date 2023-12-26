@@ -42,7 +42,7 @@ int main()
 
     if(child_pid == 0){
       if(execvp(args[0],args)==-1){
-	fprintf(stderr, "./shell: %s: command not found\n", args[0]);
+	fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
 	exit(EXIT_FAILURE);
       }
     }
