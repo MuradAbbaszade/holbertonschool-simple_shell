@@ -6,13 +6,6 @@
 #include <ctype.h>
 #include <signal.h>
 extern char **environ;
-
-void print_environment() {
-  int i =0;
-  for (i = 0; environ[i] != NULL; i++) {
-    printf("%s\n", environ[i]);
-  }
-}
 int main()
 {
   int status;
@@ -42,9 +35,6 @@ int main()
 	exit(0);
       }
     i=0;
-    if(strcmp(args[0],"env")==0){
-      print_environment();
-        }
     child_pid = fork();
     if(child_pid==-1){
       perror("error");
