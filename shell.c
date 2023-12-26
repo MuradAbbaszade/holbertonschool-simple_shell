@@ -5,6 +5,14 @@
 #include <sys/wait.h>
 #include <ctype.h>
 #include <signal.h>
+extern char **environ;
+
+void print_environment() {
+  int i =0;
+  for (i = 0; environ[i] != NULL; i++) {
+    printf("%s\n", environ[i]);
+  }
+}
 int main()
 {
   int status;
@@ -12,7 +20,6 @@ int main()
   pid_t child_pid;
   char *args[100];
   char bin[20];
-  char *envp[] = {NULL};
   char *arg;
   int i = 0;
   while(1){
@@ -21,7 +28,6 @@ int main()
       {
 	break;
       }
-
     arg = strtok(command, " \n\t");
     while(arg){
       args[i] = arg;
@@ -35,6 +41,10 @@ int main()
       {
 	exit(0);
       }
+    i=0;
+    if(strcmp(args[0],"env")==0){
+      print_environment();
+        }
     child_pid = fork();
     if(child_pid==-1){
       perror("error");
@@ -49,7 +59,7 @@ int main()
       }
     
     if(child_pid == 0){
-      if(execve(args[0],args,envp)==-1){
+      if(execve(args[0],args,environ)==-1){
 	fprintf(stderr, "./shell: %s: command not found\n", args[0]);
 	exit(EXIT_FAILURE);
       }
