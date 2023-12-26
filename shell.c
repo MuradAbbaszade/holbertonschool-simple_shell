@@ -11,6 +11,7 @@ int main()
   char command[100];
   pid_t child_pid;
   char *args[100];
+  char bin[20];
   char *envp[] = {NULL};
   char *arg;
   int i = 0;
@@ -39,6 +40,14 @@ int main()
       perror("error");
       exit(EXIT_FAILURE);
     }
+
+    if(args[0][0]!='/')
+      {
+	strcpy(bin, "/bin/");
+	strcat(bin, args[0]);
+	strcpy(args[0],bin);
+      }
+    
     if(child_pid == 0){
       if(execve(args[0],args,envp)==-1){
 	fprintf(stderr, "./shell: %s: command not found\n", args[0]);
