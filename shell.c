@@ -43,7 +43,7 @@ int main()
     if(child_pid == 0){
       if(execvp(args[0],args)==-1){
 	fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
-	exit(EXIT_FAILURE);
+	exit(127);
       }
     }
     else{
