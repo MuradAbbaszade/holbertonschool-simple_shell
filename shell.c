@@ -32,7 +32,7 @@ int main()
 
     if(strcmp(args[0], "exit")==0)
       {
-	exit(status);
+	exit(0);
       }
     child_pid = fork();
     if(child_pid==-1){
