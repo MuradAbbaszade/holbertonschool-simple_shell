@@ -20,6 +20,7 @@ int main()
   int i = 0;
   char *dir;
   while(1){
+    i=0;
     correct_path = NULL;
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
@@ -73,6 +74,7 @@ int main()
 	do{
 	  waitpid(child_pid, &status, WUNTRACED);
 	}while(!WIFEXITED(status) && !WIFSIGNALED(status));
+	free(correct_path);
       }
     }
   }
