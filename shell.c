@@ -14,7 +14,7 @@ int main() {
   char *arg;
   char *cmd_path;
   char *dir;
-  char *path_var = getenv("PATH");
+  char *path_var;
   char *path_copy;
   char *correct_path;
   int i;
@@ -22,7 +22,7 @@ int main() {
   while (1) {
     correct_path = NULL;
     i = 0;
-
+    path_var = getenv("PATH");
     fflush(stdout);
 
     if (fgets(command, 100, stdin) == NULL) {
@@ -98,9 +98,8 @@ int main() {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
-	free(correct_path);
       }
+      free(correct_path);
     }
   }
 
