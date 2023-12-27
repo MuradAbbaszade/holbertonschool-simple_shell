@@ -13,11 +13,14 @@ int main()
   pid_t child_pid;
   char *args[100];
   char *arg;
-  char *command_path;
-  char *path_token;
-  char full_path[256];
+  char *cmd_path;
+  char *path_var = getenv("PATH");
+  char *path_copy;
+  char *correct_path;
   int i = 0;
+  char *dir;
   while(1){
+    correct_path = NULL;
     fflush(stdout);
     if(fgets(command,100,stdin)==NULL)
       {
@@ -31,35 +34,46 @@ int main()
     }
     args[i]=NULL;
     if(args[0]==NULL) continue;
-
-    if(strcmp(args[0], "exit")==0)
-      {
+    if(strcmp(args[0],"env")==0){
+      execve(args[0],args,environ);
+    }
+    if(strcmp(args[0], "exit")==0){
 	exit(0);
       }
-    child_pid = fork();
-    if(child_pid==-1){
-      perror("error");
-      exit(EXIT_FAILURE);
+    if (path_var == NULL) {
+      fprintf(stderr, "PATH not found\n");
+      return EXIT_FAILURE;
     }
-    if(child_pid==0){
-    command_path = getenv("PATH");
-    path_token = strtok(command_path, ":");
-    while (path_token != NULL) {
-      snprintf(full_path, sizeof(full_path), "%s/%s", path_token, args[0]);
-      if (access(full_path, X_OK) == 0) {
-	if (execve(full_path, args, environ) == -1) {
-	  fprintf(stderr, "./shell: %s: command not found\n", args[0]);
-	exit(127);
+    path_copy = strdup(path_var);
+    dir = strtok(path_copy, ":");
+    while(dir!=NULL){
+      cmd_path = malloc(sizeof(args[0]) + sizeof(dir) + 2);
+      cmd_path = strdup(dir);
+      strcat(cmd_path,"/");
+      strcat(cmd_path,args[0]);
+      if (access(cmd_path, X_OK) == 0) {
+	correct_path = strdup(cmd_path);
+	break;
+      }
+      free(cmd_path);
+      dir = strtok(NULL,":");
+    }
+    free(path_copy);
+    if(correct_path == NULL){
+      fprintf(stderr, "./shell: %s: command not found\n", args[0]);
+    }
+    else{
+      child_pid = fork();
+      if (child_pid == 0){
+	if(execve(correct_path,args,environ) == -1){
+	  exit(127);
 	}
       }
-
-      path_token = strtok(NULL, ":");
-    }
-  }
-    else{
-      do {
-	waitpid(child_pid, &status, WUNTRACED);
-      } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+      else{
+	do{
+	  waitpid(child_pid, &status, WUNTRACED);
+	}while(!WIFEXITED(status) && !WIFSIGNALED(status));
+      }
     }
   }
   return 0;
