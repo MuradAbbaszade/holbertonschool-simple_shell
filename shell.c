@@ -43,8 +43,6 @@ int main() {
 
     if (strcmp(args[0], "env") == 0) {
       execve(args[0], args, environ);
-      perror("execve");
-      exit(EXIT_FAILURE);
     }
 
     if (strcmp(args[0], "exit") == 0) {
@@ -60,7 +58,7 @@ int main() {
     dir = strtok(path_copy, ":");
 
     while (dir != NULL) {
-      cmd_path = malloc(strlen(dir) + strlen(args[0]) + 2);
+      cmd_path = malloc(strlen(dir) + strlen(args[0]) + 1);
       if (cmd_path == NULL) {
 	perror("malloc");
 	exit(EXIT_FAILURE);
@@ -77,13 +75,11 @@ int main() {
 	}
 	break;
       }
-
-      free(cmd_path);
       dir = strtok(NULL, ":");
     }
 
     free(path_copy);
-
+    free(cmd_path);
     if (correct_path == NULL) {
       fprintf(stderr, "./shell: %s: command not found\n", args[0]);
     } else {
@@ -98,8 +94,8 @@ int main() {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	free(correct_path);
       }
-      free(correct_path);
     }
   }
 
