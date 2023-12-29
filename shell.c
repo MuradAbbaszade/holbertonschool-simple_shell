@@ -90,7 +90,6 @@ int main() {
       free(cmd_path);
       dir = strtok(NULL, ":");
     }
-    /*free(path_var);*/
     
     if (correct_path == NULL) {
       fprintf(stderr, "./shell: %s: command not found\n", args[0]);
@@ -111,10 +110,11 @@ int main() {
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
       }
 
+
     }
-    /*for (i = 1; args[i]; i++)
-      free(args[i]);
-      free(args);*/
+    free(path_copy);
+    free(command);
+    free(args);
     j++;
   }
 
