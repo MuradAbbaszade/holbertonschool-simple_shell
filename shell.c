@@ -63,7 +63,7 @@ int main() {
     dir = strtok(path_copy, ":");
 
     while (dir != NULL) {
-      cmd_path = malloc(strlen(dir) + strlen(args[0]) + 1);
+      cmd_path = malloc(strlen(dir) + strlen(args[0]) + 2);
       if (cmd_path == NULL) {
 	perror("malloc");
 	for (i = 0; args[i]; i++)
@@ -76,6 +76,7 @@ int main() {
       strcat(cmd_path, args[0]);
 
       if (access(cmd_path, X_OK) == 0) {
+	correct_path = malloc(strlen(cmd_path)*sizeof(char *));
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
 	  perror("strdup");
@@ -84,6 +85,7 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
+	free(cmd_path);
 	break;
       }
       free(cmd_path);
@@ -114,8 +116,8 @@ int main() {
     for (i = 0; args[i]; i++)
       free(args[i]);
     free(args);
-    free(correct_path);
     j++;
+    free(correct_path);
   }
 
   return 0;
