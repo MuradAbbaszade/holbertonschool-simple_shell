@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
-extern char **environ;
+
 
 int main() {
   int status;
@@ -28,6 +28,7 @@ int main() {
     fflush(stdout);
 
     if (getline(&command, &len, stdin) == -1) {
+      free(command);
       perror("getline");
       exit(EXIT_FAILURE);
     }
@@ -44,7 +45,7 @@ int main() {
     if (args[0] == NULL) continue;
 
     if (strcmp(args[0], "env") == 0) {
-      execve(args[0], args, environ);
+      execve(args[0], args, NULL);
     }
 
     if (strcmp(args[0], "exit") == 0) {
@@ -53,6 +54,9 @@ int main() {
 
     if (path_var == NULL) {
       fprintf(stderr, "PATH not found\n");
+      while(i>=0){
+	free(args[i--]);
+      }
       return EXIT_FAILURE;
     }
 
@@ -73,23 +77,29 @@ int main() {
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
 	  perror("strdup");
+	  while(i>=0){
+	    free(args[i--]);
+	  }
 	  exit(EXIT_FAILURE);
 	}
 	break;
       }
       dir = strtok(NULL, ":");
     }
-    free(path_copy);
     free(cmd_path);
+    free(path_copy);
+    
     if (correct_path == NULL) {
       fprintf(stderr, "./shell: %s: command not found\n", args[0]);
     } else {
       child_pid = fork();
 
       if (child_pid == 0) {
-	if (execve(correct_path, args, environ) == -1) {
+	if (execve(correct_path, args, NULL) == -1) {
 	  perror("execve");
-	  
+	  while(i>=0){
+	    free(args[i--]);
+	  }
 	  exit(EXIT_FAILURE);
 	}
       } else {
