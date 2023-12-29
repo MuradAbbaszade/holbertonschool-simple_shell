@@ -3,14 +3,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
-
-
+extern char **environ;
 
 int main() {
   int status;
   char *command = NULL;
   pid_t child_pid;
-  char *args[100];
+  char **args;
   char *arg;
   char *cmd_path;
   char *dir;
@@ -32,7 +31,7 @@ int main() {
       perror("getline");
       exit(EXIT_FAILURE);
     }
-
+    args = malloc(strlen(command) * sizeof(char *));
     arg = strtok(command, " \n\t");
     while (arg) {
       args[i] = arg;
@@ -45,7 +44,7 @@ int main() {
     if (args[0] == NULL) continue;
 
     if (strcmp(args[0], "env") == 0) {
-      execve(args[0], args, NULL);
+      execve(args[0], args, environ);
     }
 
     if (strcmp(args[0], "exit") == 0) {
@@ -54,9 +53,9 @@ int main() {
 
     if (path_var == NULL) {
       fprintf(stderr, "PATH not found\n");
-      while(i>=0){
-	free(args[i--]);
-      }
+      for (i = 0; args[i]; i++)
+	free(args[i]);
+      free(args);
       return EXIT_FAILURE;
     }
 
@@ -67,6 +66,9 @@ int main() {
       cmd_path = malloc(strlen(dir) + strlen(args[0]) + 1);
       if (cmd_path == NULL) {
 	perror("malloc");
+	for (i = 0; args[i]; i++)
+	  free(args[i]);
+	free(args);
 	exit(EXIT_FAILURE);
       }
       strcpy(cmd_path, dir);
@@ -77,9 +79,9 @@ int main() {
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
 	  perror("strdup");
-	  while(i>=0){
-	    free(args[i--]);
-	  }
+	  for (i = 0; args[i]; i++)
+	    free(args[i]);
+	  free(args);
 	  exit(EXIT_FAILURE);
 	}
 	break;
@@ -95,11 +97,11 @@ int main() {
       child_pid = fork();
 
       if (child_pid == 0) {
-	if (execve(correct_path, args, NULL) == -1) {
+	if (execve(correct_path, args, environ) == -1) {
 	  perror("execve");
-	  while(i>=0){
-	    free(args[i--]);
-	  }
+	  for (i = 0; args[i]; i++)
+	    free(args[i]);
+	  free(args);
 	  exit(EXIT_FAILURE);
 	}
       } else {
@@ -109,9 +111,9 @@ int main() {
       }
 
     }
-    while(i>=0){
-      free(args[i--]);
-    }
+    for (i = 0; args[i]; i++)
+      free(args[i]);
+    free(args);
     free(correct_path);
     j++;
   }
