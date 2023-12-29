@@ -86,9 +86,9 @@ int main() {
 	}
 	break;
       }
+      free(cmd_path);
       dir = strtok(NULL, ":");
     }
-    free(cmd_path);
     free(path_copy);
     
     if (correct_path == NULL) {
