@@ -8,25 +8,28 @@ extern char **environ;
 
 int main() {
   int status;
-  char command[100];
+  char *command;
   pid_t child_pid;
   char *args[100];
   char *arg;
   char *cmd_path;
   char *dir;
+  size_t len = 0;
   char *path_var;
   char *path_copy;
   char *correct_path;
   int i;
+  int j=0;
 
-  while (1) {
+  while (j<1) {
     correct_path = NULL;
     i = 0;
     path_var = getenv("PATH");
     fflush(stdout);
 
-    if (fgets(command, 100, stdin) == NULL) {
-      break;
+    if (getline(&command, &len, stdin) == -1) {
+      perror("getline");
+      exit(EXIT_FAILURE);
     }
 
     arg = strtok(command, " \n\t");
@@ -97,6 +100,7 @@ int main() {
 	free(correct_path);
       }
     }
+    j++;
   }
 
   return 0;
