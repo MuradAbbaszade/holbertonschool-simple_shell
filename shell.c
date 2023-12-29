@@ -33,7 +33,6 @@ int main() {
     }
 
     arg = strtok(command, " \n\t");
-
     while (arg) {
       args[i] = arg;
       arg = strtok(NULL, " \n\t");
@@ -90,7 +89,7 @@ int main() {
       if (child_pid == 0) {
 	if (execve(correct_path, args, environ) == -1) {
 	  perror("execve");
-	  free(correct_path);
+	  
 	  exit(EXIT_FAILURE);
 	}
       } else {
@@ -98,13 +97,11 @@ int main() {
 	  waitpid(child_pid, &status, WUNTRACED);
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
       }
+
     }
-    i--;
     while(i>=0){
-      free(args[i]);
-      i--;
+      free(args[i--]);
     }
-    free(command);
     free(correct_path);
     j++;
   }
