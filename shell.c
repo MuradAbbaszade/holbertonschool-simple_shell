@@ -8,7 +8,7 @@ extern char **environ;
 
 int main() {
   int status;
-  char *command;
+  char *command = NULL;
   pid_t child_pid;
   char *args[100];
   char *arg;
@@ -80,7 +80,6 @@ int main() {
       }
       dir = strtok(NULL, ":");
     }
-
     free(path_copy);
     free(cmd_path);
     if (correct_path == NULL) {
@@ -91,15 +90,22 @@ int main() {
       if (child_pid == 0) {
 	if (execve(correct_path, args, environ) == -1) {
 	  perror("execve");
+	  free(correct_path);
 	  exit(EXIT_FAILURE);
 	}
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	free(correct_path);
       }
     }
+    i--;
+    while(i>=0){
+      free(args[i]);
+      i--;
+    }
+    free(command);
+    free(correct_path);
     j++;
   }
 
