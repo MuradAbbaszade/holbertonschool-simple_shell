@@ -76,7 +76,6 @@ int main() {
       strcat(cmd_path, args[0]);
 
       if (access(cmd_path, X_OK) == 0) {
-	correct_path = malloc(strlen(cmd_path)*sizeof(char *));
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
 	  perror("strdup");
@@ -91,7 +90,7 @@ int main() {
       free(cmd_path);
       dir = strtok(NULL, ":");
     }
-    free(path_copy);
+    /*free(path_var);*/
     
     if (correct_path == NULL) {
       fprintf(stderr, "./shell: %s: command not found\n", args[0]);
@@ -113,11 +112,10 @@ int main() {
       }
 
     }
-    for (i = 0; args[i]; i++)
+    /*for (i = 1; args[i]; i++)
       free(args[i]);
-    free(args);
+      free(args);*/
     j++;
-    free(correct_path);
   }
 
   return 0;
