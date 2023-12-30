@@ -2,7 +2,7 @@
 
 ## Authors
 - Murad Abbaszade
-- Tural  Bayramli
+- Tural Bayramli
 
 ## Overview
 This is a simple shell project written in C. The shell allows users to execute commands in a Unix-like environment.
