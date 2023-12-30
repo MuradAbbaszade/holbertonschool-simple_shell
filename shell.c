@@ -18,9 +18,8 @@ int main() {
   char *path_copy;
   char *correct_path;
   int i;
-  int j=0;
 
-  while (j<1) {
+  while (1) {
     correct_path = NULL;
     i = 0;
     path_var = getenv("PATH");
@@ -32,6 +31,9 @@ int main() {
       exit(EXIT_FAILURE);
     }
     args = malloc(strlen(command) * sizeof(char *));
+    if(args==NULL){
+      exit(EXIT_FAILURE);
+    }
     arg = strtok(command, " \n\t");
     while (arg) {
       args[i] = arg;
@@ -51,6 +53,26 @@ int main() {
       exit(0);
     }
 
+    if(access(args[0],X_OK)==0){
+      child_pid = fork();
+
+      if (child_pid == 0) {
+	if (execve(args[0], args, environ) == -1) {
+	  perror("execve");
+	  for (i = 0; args[i]; i++)
+	    free(args[i]);
+	  free(args);
+	  exit(EXIT_FAILURE);
+	}
+      } else {
+	do {
+	  waitpid(child_pid, &status, WUNTRACED);
+	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+      }
+      continue;
+    }
+
+      
     if (path_var == NULL) {
       fprintf(stderr, "PATH not found\n");
       for (i = 0; args[i]; i++)
@@ -59,7 +81,8 @@ int main() {
       return EXIT_FAILURE;
     }
 
-    path_copy = strdup(path_var);
+    path_copy = malloc(sizeof(path_var) * sizeof(char *));
+    strcpy(path_copy, path_var);
     dir = strtok(path_copy, ":");
 
     while (dir != NULL) {
@@ -114,10 +137,9 @@ int main() {
     }
     free(correct_path);
     free(path_copy);
-    free(command);
     free(args);
-    j++;
   }
+  free(command);
 
   return 0;
 }
