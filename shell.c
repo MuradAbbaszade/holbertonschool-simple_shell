@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-while(1)
+while (1)
 {
 i = 0;
 correct_path = NULL;
