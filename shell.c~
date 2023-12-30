@@ -62,6 +62,7 @@ int main(void) {
       status = run_command(args);
     }
     free(correct_path);
+    free(path_copy);
     free(args);
   }
   free(command);
