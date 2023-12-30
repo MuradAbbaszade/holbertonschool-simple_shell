@@ -131,7 +131,6 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
-	status = 0;
       }
       else {
 	  waitpid(child_pid, &status, 0);
@@ -143,13 +142,12 @@ int main() {
 	status = EXIT_FAILURE;
       }
     }
-    
+    status = 0;
     free(correct_path);
     free(path_copy);
     free(args);
-    exit(status);
   }
   free(command);
-  exit(0);
+  exit(EXIT_SUCCESS);
   return 0;
 }
