@@ -21,6 +21,7 @@ char *get_correct_path(char *path_var, char **args)
 	for (i = 0; args[i]; i++)
 	  free(args[i]);
 	free(args);
+	free(path_copy);
 	exit(EXIT_FAILURE);
       }
       strcpy(cmd_path, dir);
@@ -33,6 +34,7 @@ char *get_correct_path(char *path_var, char **args)
 	  for (i = 0; args[i]; i++)
 	    free(args[i]);
 	  free(args);
+	  free(path_copy);
 	  exit(EXIT_FAILURE);
 	}
 	free(cmd_path);
@@ -41,5 +43,6 @@ char *get_correct_path(char *path_var, char **args)
       free(cmd_path);
       dir = strtok(NULL, ":");
     }
+    free(path_copy);
     return (correct_path);
 }
