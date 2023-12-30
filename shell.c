@@ -7,6 +7,14 @@
  */
 int main(void)
 {
+int status = 0;
+char *command = NULL;
+char **args;
+size_t len = 0;
+char *path_var;
+char *correct_path;
+int i;
+  
 while (1)
 {
 i = 0;
@@ -68,7 +76,7 @@ exit(status);
  * @args: An array of strings representing the command and its arguments.
  * Return: The exit status of the executed command.
  */
-int run_with_full_path(char **correct_path, char **args)
+int run_with_full_path(char *correct_path, char **args)
 {
 int status = 0;
 

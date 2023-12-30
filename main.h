@@ -6,15 +6,9 @@
 #include <string.h>
 #include <sys/wait.h>
 
-int status = 0;
-char *command = NULL;
-char **args;
-size_t len = 0;
-char *path_var;
-char *correct_path;
-int i;
-
-extern char **environ
+extern char **environ;
+void run_exit(char *command, char **args, int status);
+int run_with_full_path(char *correct_path, char **args);
 int run_command(char **args);
 char **get_args(char *command);
 char *get_correct_path(char *path_var, char **args);
