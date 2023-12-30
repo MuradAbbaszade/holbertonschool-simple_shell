@@ -49,6 +49,8 @@ int main() {
     }
 
     if (strcmp(args[0], "exit") == 0) {
+      free(command);
+      free(args);
       exit(0);
     }
 
