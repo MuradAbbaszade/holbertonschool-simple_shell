@@ -65,6 +65,7 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
+	status = EXIT_SUCCESS;
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
@@ -132,6 +133,7 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
+	status = EXIT_SUCCESS;
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
@@ -150,6 +152,7 @@ int main() {
     free(args);
   }
   free(command);
-
+  if(status)
+    exit(status);
   return 0;
 }
