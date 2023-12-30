@@ -130,6 +130,11 @@ int main() {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	if (WIFEXITED(status)) {
+	  status = WEXITSTATUS(status);
+	} else {
+	  status = EXIT_FAILURE;
+	}
       }
 
 
