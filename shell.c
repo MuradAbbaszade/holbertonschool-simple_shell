@@ -114,7 +114,7 @@ int main() {
     }
     
     if (correct_path == NULL) {
-      fprintf(stderr, "./shell: %s: command not found\n", args[0]);
+      fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
     } else {
       child_pid = fork();
 
