@@ -137,9 +137,9 @@ int main(void) {
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
         if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-            printf("Command successfully executed\n");
+		status = 0;
         } else {
-            printf("Command failed with status: %d\n", WEXITSTATUS(status));
+            status = WEXITSTATUS(status);
         }
       }
     }
