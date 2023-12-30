@@ -70,11 +70,11 @@ int main(void) {
 	}
       }
       else {
-	  waitpid(child_pid, &status, WUNTRACED);
-	if (WIFEXITED(status)) {
-	  status = WEXITSTATUS(status);
-	} 
-	free(args);
+        waitpid(child_pid, &status, WUNTRACED);
+        if (WIFEXITED(status)) {
+          status = WEXITSTATUS(status);
+        }
+        free(args);
       }
       continue;
     }
@@ -132,13 +132,15 @@ int main(void) {
 	}
       }
       else {
-	  waitpid(child_pid, &status, 0);
-      }
-      if (WIFEXITED(status)) {
-	status = WEXITSTATUS(status);
-      }
-      else {
-	status = EXIT_FAILURE;
+        do {
+            waitpid(child_pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+
+        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+            printf("Command successfully executed\n");
+        } else {
+            printf("Command failed with status: %d\n", WEXITSTATUS(status));
+        }
       }
     }
     free(correct_path);
