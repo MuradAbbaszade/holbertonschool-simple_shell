@@ -48,6 +48,7 @@ int main(void)
         if (access(args[0], X_OK) == 0)
         {
             status = run_command(args);
+	    free(args);
             continue;
         }
         if (path_var == NULL)
