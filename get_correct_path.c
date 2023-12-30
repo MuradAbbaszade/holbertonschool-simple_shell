@@ -9,8 +9,8 @@ char *get_correct_path(char *path_var, char **args)
   char *path_copy;
   char *dir;
   char *cmd_path;
-  char *correct_path;
-    path_copy = malloc(sizeof(path_var) * sizeof(char *));
+  char *correct_path = NULL;
+    path_copy = malloc(strlen(path_var) + 1);
     strcpy(path_copy, path_var);
     dir = strtok(path_copy, ":");
 
@@ -34,7 +34,6 @@ char *get_correct_path(char *path_var, char **args)
 	  free(cmd_path);
 	  exit(EXIT_FAILURE);
 	}
-	free(cmd_path);
 	break;
       }
       free(cmd_path);
