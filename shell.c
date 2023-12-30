@@ -51,7 +51,7 @@ int main() {
     if (strcmp(args[0], "exit") == 0) {
       free(command);
       free(args);
-      exit(0);
+      exit(2);
     }
 
     if(access(args[0],X_OK)==0){
