@@ -6,7 +6,7 @@
 extern char **environ;
 
 int main() {
-  int status;
+  int status = 0;
   char *command = NULL;
   pid_t child_pid;
   char **args;
