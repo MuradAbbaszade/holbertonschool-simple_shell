@@ -52,6 +52,24 @@ free(args);
 exit(EXIT_FAILURE);
 }
 correct_path = get_correct_path(path_var, args);
+ status = run_with_full_path(correct_path, args);
+free(args);
+}
+free(command);
+exit(status);
+return (status);
+}
+
+/**
+ * run_with_full_path - Execute a command with its full path.
+ * @correct_path: The full path to the executable command.
+ * @args: An array of strings representing the command and its arguments.
+ * Return: The exit status of the executed command.
+ */
+int run_with_full_path(char **correct_path, char **args)
+{
+int status = 0;
+ 
 if (correct_path == NULL)
 {
 status = 127;
@@ -63,9 +81,5 @@ args[0] = correct_path;
 status = run_command(args);
 free(correct_path);
 }
-free(args);
-}
-free(command);
-exit(status);
 return (status);
 }
