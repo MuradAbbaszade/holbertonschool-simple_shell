@@ -87,7 +87,6 @@ int main() {
     while (dir != NULL) {
       cmd_path = malloc(strlen(dir) + strlen(args[0]) + 2);
       if (cmd_path == NULL) {
-	perror("malloc");
 	for (i = 0; args[i]; i++)
 	  free(args[i]);
 	free(args);
@@ -100,7 +99,6 @@ int main() {
       if (access(cmd_path, X_OK) == 0) {
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
-	  perror("strdup");
 	  for (i = 0; args[i]; i++)
 	    free(args[i]);
 	  free(args);
