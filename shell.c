@@ -74,6 +74,7 @@ int main() {
 	} else {
 	  status = EXIT_FAILURE;
 	}
+	free(args);
       }
       continue;
     }
