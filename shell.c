@@ -27,7 +27,6 @@ int main() {
 
     if (getline(&command, &len, stdin) == -1) {
       free(command);
-      perror("getline");
       exit(EXIT_FAILURE);
     }
     args = malloc(strlen(command) * sizeof(char *));
