@@ -5,7 +5,7 @@
 #include "main.h"
 
 /**
- * get_correct_path - Find the correct full path for a given command in the PATH variable.
+ * get_correct_path - Find the correct full path
  * @path_var: The PATH variable string.
  * @args: An array of strings representing the command and its arguments.
  * Return: Full path of the command
@@ -16,6 +16,7 @@ char *get_correct_path(char *path_var, char **args)
     char *dir;
     char *cmd_path;
     char *correct_path = NULL;
+    
     path_copy = malloc(strlen(path_var) + 1);
     strcpy(path_copy, path_var);
     dir = strtok(path_copy, ":");
