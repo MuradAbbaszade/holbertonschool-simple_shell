@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 extern char **environ;
 
-int main() {
+int main(void) {
   int status = 0;
   char *command = NULL;
   pid_t child_pid;
@@ -28,6 +28,9 @@ int main() {
     if (getline(&command, &len, stdin) == -1) {
       free(command);
       exit(EXIT_FAILURE);
+    }
+    if(command == NULL){
+      break;
     }
     args = malloc(strlen(command) * sizeof(char *));
     if(args==NULL){
@@ -65,18 +68,14 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
-      } else {
-	do {
+      }
+      else {
 	  waitpid(child_pid, &status, WUNTRACED);
-	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	if (WIFEXITED(status)) {
 	  status = WEXITSTATUS(status);
-	} else {
-	  status = EXIT_FAILURE;
-	}
+	} 
 	free(args);
       }
-      status = 0; 
       continue;
     }
 
