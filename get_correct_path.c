@@ -29,9 +29,9 @@ char *get_correct_path(char *path_var, char **args)
       if (access(cmd_path, X_OK) == 0) {
 	correct_path = strdup(cmd_path);
 	if (correct_path == NULL) {
+	  free(cmd_path);
 	  free(args);
 	  free(path_copy);
-	  free(cmd_path);
 	  exit(EXIT_FAILURE);
 	}
 	break;
@@ -39,6 +39,8 @@ char *get_correct_path(char *path_var, char **args)
       free(cmd_path);
       dir = strtok(NULL, ":");
     }
+    if(correct_path!=NULL)
+      free(cmd_path);
     free(path_copy);
     return (correct_path);
 }

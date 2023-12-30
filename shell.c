@@ -22,7 +22,7 @@ int main(void) {
 
     if (getline(&command, &len, stdin) == -1) {
       free(command);
-      exit(0);
+      exit(status);
     }
     if(command == NULL){
       break;
@@ -66,5 +66,5 @@ int main(void) {
   }
   free(command);
   exit(status);
-  return 0;
+  return (status);
 }
