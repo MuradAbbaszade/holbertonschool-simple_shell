@@ -60,13 +60,11 @@ int main() {
 
       if (child_pid == 0) {
 	if (execve(args[0], args, environ) == -1) {
-	  perror("execve");
 	  for (i = 0; args[i]; i++)
 	    free(args[i]);
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
-	status = 0;
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
@@ -78,16 +76,16 @@ int main() {
 	}
 	free(args);
       }
+      status = 0; 
       continue;
     }
 
       
     if (path_var == NULL) {
-      fprintf(stderr, "PATH not found\n");
       for (i = 0; args[i]; i++)
 	free(args[i]);
       free(args);
-      return EXIT_FAILURE;
+      exit(EXIT_FAILURE);
     }
 
     path_copy = malloc(sizeof(path_var) * sizeof(char *));
@@ -123,37 +121,35 @@ int main() {
     
     if (correct_path == NULL) {
       fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
-    } else {
+    }
+    else {
       child_pid = fork();
-
       if (child_pid == 0) {
 	if (execve(correct_path, args, environ) == -1) {
-	  perror("execve");
 	  for (i = 0; args[i]; i++)
 	    free(args[i]);
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
 	status = 0;
-      } else {
-	do {
-	  waitpid(child_pid, &status, WUNTRACED);
-	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	if (WIFEXITED(status)) {
-	  status = WEXITSTATUS(status);
-	} else {
-	  status = EXIT_FAILURE;
-	}
       }
-
-
+      else {
+	  waitpid(child_pid, &status, 0);
+      }
+      if (WIFEXITED(status)) {
+	status = WEXITSTATUS(status);
+      }
+      else {
+	status = EXIT_FAILURE;
+      }
     }
+    
     free(correct_path);
     free(path_copy);
     free(args);
+    exit(status);
   }
   free(command);
-  if(status == 0)
-    exit(status);
+  exit(0);
   return 0;
 }
