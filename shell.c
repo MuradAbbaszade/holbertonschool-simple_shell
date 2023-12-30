@@ -10,7 +10,6 @@ int main(void) {
   int status = 0;
   char *command = NULL;
   char **args;
-  char *arg;
   char *cmd_path;
   char *dir;
   size_t len = 0;
@@ -32,24 +31,10 @@ int main(void) {
     if(command == NULL){
       break;
     }
-    args = malloc(strlen(command) * sizeof(char *));
-    if(args==NULL){
-      exit(EXIT_FAILURE);
-    }
-    arg = strtok(command, " \n\t");
-    while (arg) {
-      args[i] = arg;
-      arg = strtok(NULL, " \n\t");
-      i++;
-    }
-
-    args[i] = NULL;
-
+    args = get_args(command);
+    
     if (args[0] == NULL) continue;
 
-    if (strcmp(args[0], "env") == 0) {
-      execve(args[0], args, environ);
-    }
 
     if (strcmp(args[0], "exit") == 0) {
       free(command);
