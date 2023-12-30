@@ -112,7 +112,7 @@ int main() {
 
 
     }
-    /*free(correct_path);*/
+    free(correct_path);
     free(path_copy);
     free(command);
     free(args);
