@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "main.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -8,7 +9,6 @@ extern char **environ;
 int main(void) {
   int status = 0;
   char *command = NULL;
-  pid_t child_pid;
   char **args;
   char *arg;
   char *cmd_path;
@@ -49,7 +49,6 @@ int main(void) {
 
     if (strcmp(args[0], "env") == 0) {
       execve(args[0], args, environ);
-      continue;
     }
 
     if (strcmp(args[0], "exit") == 0) {
@@ -59,23 +58,7 @@ int main(void) {
     }
 
     if(access(args[0],X_OK)==0){
-      child_pid = fork();
-
-      if (child_pid == 0) {
-	if (execve(args[0], args, environ) == -1) {
-	  for (i = 0; args[i]; i++)
-	    free(args[i]);
-	  free(args);
-	  exit(EXIT_FAILURE);
-	}
-      }
-      else {
-        waitpid(child_pid, &status, WUNTRACED);
-        if (WIFEXITED(status)) {
-          status = WEXITSTATUS(status);
-        }
-        free(args);
-      }
+      status = run_command(args);
       continue;
     }
 
@@ -122,26 +105,8 @@ int main(void) {
       fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
     }
     else {
-      child_pid = fork();
-      if (child_pid == 0) {
-	if (execve(correct_path, args, environ) == -1) {
-	  for (i = 0; args[i]; i++)
-	    free(args[i]);
-	  free(args);
-	  exit(EXIT_FAILURE);
-	}
-      }
-      else {
-        do {
-            waitpid(child_pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
-        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-	  status = 0;
-        } else {
-	  status = WEXITSTATUS(status);
-        }
-      }
+      args[0]=correct_path;
+      status = run_command(args);
     }
     free(correct_path);
     free(path_copy);
