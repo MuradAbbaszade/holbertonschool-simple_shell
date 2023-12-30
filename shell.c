@@ -5,8 +5,6 @@
 #include <sys/wait.h>
 #include "main.h"
 
-extern char **environ;
-
 /**
  * main - Entry point for the simple shell program.
  *

@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
-extern char **environ;
 /**
  * run_command - Execute a command.
  * @args: An array of strings representing the command and its arguments.
