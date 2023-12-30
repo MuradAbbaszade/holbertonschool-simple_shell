@@ -142,7 +142,6 @@ int main() {
 	status = EXIT_FAILURE;
       }
     }
-    status = 0;
     free(correct_path);
     free(path_copy);
     free(args);
