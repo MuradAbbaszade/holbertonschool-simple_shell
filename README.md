@@ -28,6 +28,7 @@ $ ./hsh
 hsh$ ls -l
 ```
 Authors
+
 Murad Abbaszade: [GitHub Profile](https://github.com/MuradAbbaszade)
 
 Tural Bayramli: [GitHub Profile](https://github.com/STTGL)
