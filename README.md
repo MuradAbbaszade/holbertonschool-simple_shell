@@ -12,20 +12,21 @@ To compile the shell, use the following command:
 
 ```bash
 gcc *.c -o hsh
+```
 Running the Shell
 Execute the following command to run the shell:
 
-bash
-Copy code
+```bash
 ./hsh
+```
 Usage
 Once the shell is running, you can enter various commands supported by the shell.
 
 Example
-bash
-Copy code
+```bash
 $ ./hsh
 hsh$ ls -l
+```
 Authors
-Murad Abbaszade: GitHub Profile
-Tural Bayramli: GitHub Profile
+Murad Abbaszade: [GitHub Profile](https://github.com/MuradAbbaszade)https://github.com/MuradAbbaszade
+Tural Bayramli: [GitHub Profile](https://github.com/STTGL)https://github.com/STTGL
