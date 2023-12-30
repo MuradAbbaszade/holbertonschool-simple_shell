@@ -46,6 +46,7 @@ int main() {
 
     if (strcmp(args[0], "env") == 0) {
       execve(args[0], args, environ);
+      continue;
     }
 
     if (strcmp(args[0], "exit") == 0) {
@@ -65,7 +66,7 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
-	status = EXIT_SUCCESS;
+	status = 0;
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
@@ -133,7 +134,7 @@ int main() {
 	  free(args);
 	  exit(EXIT_FAILURE);
 	}
-	status = EXIT_SUCCESS;
+	status = 0;
       } else {
 	do {
 	  waitpid(child_pid, &status, WUNTRACED);
@@ -152,7 +153,7 @@ int main() {
     free(args);
   }
   free(command);
-  if(status)
+  if(status == 0)
     exit(status);
   return 0;
 }
