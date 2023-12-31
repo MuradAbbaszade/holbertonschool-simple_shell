@@ -1,9 +1,5 @@
 # Simple Shell Project
 
-## Authors
-- Murad Abbaszade
-- Tural Bayramli
-
 ## Overview
 This is a simple shell project written in C. The shell allows users to execute commands in a Unix-like environment.
 
@@ -35,8 +31,8 @@ Example
 $ ./hsh
 hsh$ ls -l
 ```
-Authors
 
-Murad Abbaszade: [GitHub Profile](https://github.com/MuradAbbaszade)
+## Authors
+-Murad Abbaszade: [GitHub Profile](https://github.com/MuradAbbaszade)
 
-Tural Bayramli: [GitHub Profile](https://github.com/STTGL)
+-Tural Bayramli: [GitHub Profile](https://github.com/STTGL)
