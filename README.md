@@ -26,7 +26,7 @@ Execute the following command to run the shell:
 Usage
 Once the shell is running, you can enter various commands supported by the shell.
 
-Example
+## Example
 ```bash
 $ ./hsh
 ls -l
@@ -43,6 +43,7 @@ total 76
 -rw-r--r-- 1 root root  1746 Dec 30 11:47 shell.c
 -rwxr-xr-x 1 root root   119 Dec 17 04:00 push
 ```
+## Files
 
 | File                  | Description                                   |
 |-----------------------|-----------------------------------------------|
